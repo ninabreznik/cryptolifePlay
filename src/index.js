@@ -89,7 +89,7 @@ function html () {
   <div>
     <div class=${css.title}>
       <h1>Skilltree</h1>
-      <h3>inspired by <a href="http://www.dungeonsanddevelopers.com/#_a_4_Your%20Name">Dungeons and developers</a></h3>
+      <h3>inspired by <a href="http://www.dungeonsanddevelopers.com/#_a_4_Your%20Name" target="_blank">Dungeons and developers</a></h3>
     </div>
     <div>${displayDependencies()}</div>
     ${cyDiv}
