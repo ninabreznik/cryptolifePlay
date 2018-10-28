@@ -22,6 +22,7 @@ function html () {
       container: cyDiv,
       boxSelectionEnabled: false,
       autounselectify: true,
+      layout: { name: 'cose'},
       style: [
         {
           selector: 'node',
@@ -30,16 +31,16 @@ function html () {
             'text-opacity': 0.8,
             'text-valign': 'center',
             'text-halign': 'right',
-            'background-color': 'green'
+            'background-color': 'violet'
           }
         },
         {
           selector: 'edge',
           style: {
-            'width': 4,
+            'width': 1,
             'target-arrow-shape': 'triangle',
-            'line-color': 'green',
-            'target-arrow-color': 'red',
+            'line-color': 'violet',
+            'target-arrow-color': 'black',
             'curve-style': 'bezier'
           }
         }
@@ -73,19 +74,24 @@ function html () {
   `
 
   function getNodesAndEdges (arr) {
+    var all = {}
     var cyNodes = []
     var cyEdges = []
+    var lenghts = []
     arr.forEach((workshop,id)=>{
       cyNodes.push({ data: { id: 'n'+id, label: workshop.title } })
-      generateEdges(workshop, id, cyEdges)
+      all[workshop.url] = `n${id}`
+    })
+    arr.forEach((workshop,id)=> {
+      generateEdges(workshop, id, cyEdges, all)
     })
     createCy(cyNodes, cyEdges)
   }
 
-  function generateEdges(workshop, id, edges) {
-    console.log()
-    workshop.needs.forEach((url,i) => {
-      edges.push({ data: { source: 'n'+i, target: 'n'+id } })
+  function generateEdges(workshop, id, edges, all) {
+    var requirements = workshop.needs
+    requirements.forEach((url,i) => {
+      edges.push({ data: { source: all[url], target: 'n'+id } })
     })
   }
 
@@ -116,36 +122,3 @@ function html () {
 }
 
 html()
-
-/*
-elements: {
-  nodes: [
-    { data: { id: 'n0', label: 'Less than 15,000' } },
-    { data: { id: 'n1', label: 'More than 14,999' } },
-    { data: { id: 'n2', label: 'More than 24,999' } },
-    { data: { id: 'n3', label: 'More than 34,999' } },
-    { data: { id: 'n4', label: 'Less than 500k' } },
-    { data: { id: 'n5', label: 'Buy more tickets' } },
-    { data: { id: 'n7', label: 'Condition to be met' } },
-    { data: { id: 'n8', label: 'Won the lottery' } },
-    { data: { id: 'n9', label: 'Over £1,000,000' } },
-    { data: { id: 'n10', label: 'Ending it here' } },
-    { data: { id: 'n11', label: 'Buy more tickets' } },
-    { data: { id: 'n12', label: 'Bribe the judges' } }
-  ],
-  edges: [
-    { data: { source: 'n0', target: 'n1' } },
-    { data: { source: 'n1', target: 'n2' } },
-    { data: { source: 'n1', target: 'n7' } },
-    { data: { source: 'n2', target: 'n3' } },
-    { data: { source: 'n3', target: 'n12' } },
-    { data: { source: 'n2', target: 'n4' } },
-    { data: { source: 'n4', target: 'n5' } },
-    { data: { source: 'n4', target: 'n7' } },
-    { data: { source: 'n1', target: 'n8' } },
-    { data: { source: 'n0', target: 'n9' } },
-    { data: { source: 'n9', target: 'n11' } },
-    { data: { source: 'n11', target: 'n10' } }
-  ]
-},
-*/
