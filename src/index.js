@@ -50,6 +50,8 @@ function html () {
         nodes: cyNodes,
         edges: cyEdges
       },
+
+  
     })
   }
 
