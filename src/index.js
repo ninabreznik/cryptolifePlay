@@ -6,15 +6,23 @@ var jsons
 
 function html () {
   var css = csjs`
-  .cy {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 999;
-  }
+    .cy {
+      width: 80%;
+      height: 80%;
+      position: absolute;
+      left: 15%;
+      top: 15%;
+      z-index: 999;
+      background-color: grey;
+      border-radius: 4;
+    }
+    .title {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
   `
+
   document.body.innerHTML = `<div class=${css.cy}></div>`
   var cyDiv = document.body.children[0]
   function createCy (cyNodes, cyEdges) {
@@ -22,7 +30,7 @@ function html () {
       container: cyDiv,
       boxSelectionEnabled: false,
       autounselectify: true,
-      layout: { name: 'cose'},
+      layout: { name: 'circle'},
       style: [
         {
           selector: 'node',
@@ -31,29 +39,38 @@ function html () {
             'text-opacity': 0.8,
             'text-valign': 'center',
             'text-halign': 'right',
-            'background-color': 'violet'
+            'background-color': 'violet',
+            'font-size': 30
           }
         },
         {
           selector: 'edge',
           style: {
-            'width': 1,
+            'width': 10,
             'target-arrow-shape': 'triangle',
-            'line-color': 'violet',
-            'target-arrow-color': 'black',
+            'line-color': 'black',
+            'target-arrow-color': 'violet',
             'curve-style': 'bezier'
           }
         }
       ],
+
 
       elements: {
         nodes: cyNodes,
         edges: cyEdges
       },
 
-  
+
     })
+    cy.on('tap', 'node', selectedNodeHandler)
+    function selectedNodeHandler(node) {
+      console.log(node)
+      window.open('https://ninabreznik.github.io/workshop_app/','_blank')
+    }
   }
+
+
 
   var arr = [
     "http://172.31.253.118:9966/json_s/1.json",
@@ -70,6 +87,10 @@ function html () {
 
   var el = bel`
   <div>
+    <div class=${css.title}>
+      <h1>Skilltree</h1>
+      <h3>inspired by <a href="http://www.dungeonsanddevelopers.com/#_a_4_Your%20Name">Dungeons and developers</a></h3>
+    </div>
     <div>${displayDependencies()}</div>
     ${cyDiv}
   </div>
